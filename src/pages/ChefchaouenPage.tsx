@@ -312,37 +312,38 @@ const ChefchaouenPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Guide Sidebar - Only show when no content is selected */}
-      {selectedContent === 'slideshow' && (
-        <div className="w-80 bg-white border-r border-slate-200 overflow-y-auto">
-          <div className="p-6">
-            <h1 className="text-2xl font-bold text-slate-800 mb-1">Chefchaouen</h1>
-            <p className="text-slate-500 text-sm mb-6">The Blue Pearl of Morocco</p>
-            
-            <div className="space-y-2">
-              {guideCategories.map(category => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedGuideCategory(category.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                    selectedGuideCategory === category.id
-                      ? 'bg-blue-50 text-blue-700'
-                      : 'hover:bg-slate-50 text-slate-700'
-                  }`}
-                >
-                  <div className="flex items-center">
-                    <span className="mr-3">{category.icon}</span>
-                    <span>{category.title}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
+      {/* Guide Sidebar - Always visible */}
+      <div className="w-80 bg-white border-r border-slate-200 overflow-y-auto">
+        <div className="p-6">
+          <h1 className="text-2xl font-bold text-slate-800 mb-1">Chefchaouen</h1>
+          <p className="text-slate-500 text-sm mb-6">The Blue Pearl of Morocco</p>
+          
+          <div className="space-y-2">
+            {guideCategories.map(category => (
+              <button
+                key={category.id}
+                onClick={() => {
+                  setSelectedGuideCategory(category.id);
+                  setSelectedContent('slideshow');
+                }}
+                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                  selectedGuideCategory === category.id && selectedContent === 'slideshow'
+                    ? 'bg-blue-50 text-blue-700'
+                    : 'hover:bg-slate-50 text-slate-700'
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="mr-3">{category.icon}</span>
+                  <span>{category.title}</span>
+                </div>
+              </button>
+            ))}
           </div>
         </div>
-      )}
+      </div>
 
       {/* Main Content */}
-      <div className={`flex-1 ${selectedContent === 'slideshow' ? '' : 'w-full'}`}>
+      <div className="flex-1">
         {/* Navigation */}
         <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
           <div className="container mx-auto px-4">
