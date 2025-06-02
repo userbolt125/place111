@@ -281,60 +281,68 @@ const ChefchaouenPage: React.FC = () => {
 
   const renderContent = () => {
     if (selectedContent === 'slideshow') {
-      return null;
+      return (
+        <div className="p-6">
+          {renderGuideContent()}
+        </div>
+      );
     }
 
     return (
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div className="h-48 bg-slate-100" />
-            <div className="p-4">
-              <h3 className="font-medium text-lg mb-2">
-                {selectedContent.charAt(0).toUpperCase() + selectedContent.slice(1)} Item {index + 1}
-              </h3>
-              <p className="text-slate-600 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+      <div className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
+              <div className="h-48 bg-slate-100" />
+              <div className="p-4">
+                <h3 className="font-medium text-lg mb-2">
+                  {selectedContent.charAt(0).toUpperCase() + selectedContent.slice(1)} Item {index + 1}
+                </h3>
+                <p className="text-slate-600 text-sm">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                  Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     );
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
-      {/* Guide Sidebar */}
-      <div className="w-80 bg-white border-r border-slate-200 overflow-y-auto">
-        <div className="p-6">
-          <h1 className="text-2xl font-bold text-slate-800 mb-1">Chefchaouen</h1>
-          <p className="text-slate-500 text-sm mb-6">The Blue Pearl of Morocco</p>
-          
-          <div className="space-y-2">
-            {guideCategories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedGuideCategory(category.id)}
-                className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                  selectedGuideCategory === category.id
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'hover:bg-slate-50 text-slate-700'
-                }`}
-              >
-                <div className="flex items-center">
-                  <span className="mr-3">{category.icon}</span>
-                  <span>{category.title}</span>
-                </div>
-              </button>
-            ))}
+      {/* Guide Sidebar - Only show when no content is selected */}
+      {selectedContent === 'slideshow' && (
+        <div className="w-80 bg-white border-r border-slate-200 overflow-y-auto">
+          <div className="p-6">
+            <h1 className="text-2xl font-bold text-slate-800 mb-1">Chefchaouen</h1>
+            <p className="text-slate-500 text-sm mb-6">The Blue Pearl of Morocco</p>
+            
+            <div className="space-y-2">
+              {guideCategories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedGuideCategory(category.id)}
+                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                    selectedGuideCategory === category.id
+                      ? 'bg-blue-50 text-blue-700'
+                      : 'hover:bg-slate-50 text-slate-700'
+                  }`}
+                >
+                  <div className="flex items-center">
+                    <span className="mr-3">{category.icon}</span>
+                    <span>{category.title}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
-      <div className="flex-1">
+      <div className={`flex-1 ${selectedContent === 'slideshow' ? '' : 'w-full'}`}>
         {/* Navigation */}
         <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
           <div className="container mx-auto px-4">
@@ -358,9 +366,9 @@ const ChefchaouenPage: React.FC = () => {
         </div>
 
         {/* Content Area */}
-        <div className="p-6">
-          {/* Slideshow */}
-          <div className="relative h-[300px] mb-6 rounded-lg overflow-hidden">
+        <div>
+          {/* Slideshow - Always visible */}
+          <div className="relative h-[300px] overflow-hidden">
             {images.map((image, index) => (
               <div
                 key={index}
@@ -392,10 +400,7 @@ const ChefchaouenPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Guide Content */}
-          {renderGuideContent()}
-
-          {/* Navigation Content */}
+          {/* Dynamic Content */}
           {renderContent()}
         </div>
       </div>
